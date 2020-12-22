@@ -1,6 +1,6 @@
 *Run Script without Display with follow command:
-*Command: grads -h GD -blcx "run aws_plot_swi.gs DOMAIN DATE HOUR CYCLE"
-*Example for Use this Script: grads -h GD -blcx "run aws_plot_swi.gs ch4km 20201212 12 74"
+*Command: grads -h GD -blcx "run aws_uwbe_int.gs DOMAIN DATE HOUR CYCLE"
+*Example for Use this Script: grads -h GD -blcx "run aws_uwbe_int.gs ch4km 20201212 12 74"
 *Script by Dominic Kurz, UwBe International
 *meteo@weather.uwbeinternational.org
 
@@ -114,10 +114,11 @@ endif
 
 * Colortable
 ************
-'/home/uwbe/uems/grads_scripts/auto_without_sim/color.gs 0 20 0.2 -gxout shaded -kind (255,255,255)->(130,130,130)->(190,190,63)->(255,255,0)->(236,208,0)->(217,161,0)->(197,114,0)->(178,67,0)->(158,20,0)->(179,16,56)->(201,11,113)->(223,7,169)->(245,2,226)->(216,32,229)->(187,62,232)->(158,92,236)->(129,122,239)->(100,152,243)->(71,182,246)->(42,212,249)->(13,242,253)'
+*Level < 1 = white / Level 1 = Orange / level 2 = Red / Level 3 = Purple
+'/home/uwbe/uems/grads_scripts/auto_without_sim/color.gs 0 3 0.2 -gxout shaded -kind (255,255,255)->(245,176,73)->(242,41,41)->(242,41,229)'
 
 * Declaration variables & calculations
-**************************************
+**************************************  
 *Temp 2m
 'define t2m  = const((tmp2m-273.16),0,-u)'
 
@@ -241,10 +242,13 @@ endif
 *Conditions
 ***********
 *CAPE 255-0hPa >= 500J/kg AND best 4 layer lifted index <= -2
+*Color: rgb 242 215 41
   
 if (cape255_0mb>= 500&no4lftxsfc<=-2)
 *//TODO: Draw yellow Line for 50% probability of thunderstorms around the Area
 *//TODO: Draw 50% Thunderstorm probability
+'define thsprob=((cape255_0mb)/500)*(no4lftxsfc/2)'
+'d thsprob'
 endif
 
 ************************************************************************
@@ -376,10 +380,16 @@ hub = subwrd(times,6)
 'draw line 0 8.1 11 8.1'
 
 if (ghr < 10)
-   'printim /home/uwbe/uems/runs/'domain'/wrf_out/auto_without_sim/uwbe_swe_index/'cyc'/bow_derecho_'hPa'_'runfile'f0'ghr'.png x950 y950 png white'
-   else
-   'printim /home/uwbe/uems/runs/'domain'/wrf_out/auto_without_sim/uwbe_swe_index/'cyc'/bow_derecho_'hPa'_'runfile'f'ghr'.png x950 y950 png white'
-   endif
+*'printim /home/uwbe/uems/runs/'domain'/wrf_out/auto_without_sim/uwbe_swe_index/'cyc'/uwbe_swe_index_'runfile'f0'ghr'.png x950 y950 png white'
+
+'printim /home/uwbe/uems/runs/experimental/uwbe_swe_index_'runfile'f0'ghr'.png x950 y950 png white'
+else
+
+*'printim /home/uwbe/uems/runs/'domain'/wrf_out/auto_without_sim/uwbe_swe_index/'cyc'/uwbe_swe_index_'runfile'f'ghr'.png x950 y950 png white'
+
+'printim /home/uwbe/uems/runs/experimental/uwbe_swe_index_'runfile'f'ghr'.png x950 y950 png white'
+
+endif
    'clear'
    i = i + 1
 endwhile
