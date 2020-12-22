@@ -1,6 +1,6 @@
 *Run Script without Display with follow command:
-*Command: grads -h GD -blcx "run aws_uwbe_int.gs DOMAIN DATE HOUR CYCLE"
-*Example for Use this Script: grads -h GD -blcx "run aws_uwbe_int.gs ch4km 20201212 12 74"
+*Command: grads -h GD -blcx "run aws_plot_swi.gs DOMAIN DATE HOUR CYCLE"
+*Example for Use this Script: grads -h GD -blcx "run aws_plot_swi.gs ch4km 20201212 12 74"
 *Script by Dominic Kurz, UwBe International
 *meteo@weather.uwbeinternational.org
 
