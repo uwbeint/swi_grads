@@ -235,15 +235,14 @@ endif
 'define lls = mag(abs(u900-ugrd10m),abs(v900-vgrd10m))'
 
 *********************************************************************************
-* Thunderstorm (50% probaility of thunderstorms occurin in the designated Area) *
+* Thunderstorm (50% probability of thunderstorms occurin in the designated Area) *
 *********************************************************************************
 
 *Conditions
 ***********
 if (cape255_0mb>= 500&no4lftxsfc<=-2)
-ths_prob = '1';
-else
-ths_prob = '0';
+*//TODO: Draw yellow Line for 50% probability of thunderstorms around the Area
+*//TODO: Draw 50% Thunderstorm probability
 endif
 
 ************************************************************************
@@ -254,7 +253,8 @@ endif
 ***********
 *cape255_0mb >= 500J/kg AND low level shear >=10m/s AND deep layer shear >= 10m/s AND 3km SRH >=100m2/s2
 if((cape255_0mb>= 500&lls>= 10&dls>= 10&srh3km>= 100) | (scp>=3.5) | (stp>=1.2))
-*DRAW LEVEL 1
+*//TODO: Drawing Lines around the Level 1 Area (orange line)
+*//DRAW LEVEL 1
 
 else if ((cape255_0mb>= 1000&lls>= 15&dls>= 20&srh3km>= 150) | (scp>=7.5) | (stp>=2.5))
 
@@ -264,7 +264,9 @@ else if ((cape255_0mb>= 1000&lls>= 15&dls>= 20&srh3km>= 150) | (scp>=7.5) | (stp
 
 *Conditions
 ***********
-*DRAW LEVEL 2
+*//TODO: Drawing Lines around the Level 2 Area (red line)
+*//DRAW LEVEL 2
+
 else if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>=5))
 
 *************************************************************************
@@ -273,7 +275,9 @@ else if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>
 
 *Conditions
 ***********
-*DRAW LEVEL 3
+*//TODO: Drawing Lines around the Level 3 Area (purple line)
+*//DRAW LEVEL 3
+
 endif
 
 * Colorbar & annotations
