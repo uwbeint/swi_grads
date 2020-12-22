@@ -231,7 +231,13 @@ endif
 ***********
 *CAPE 255-0hPa >= 500J/kg AND best 4 layer lifted index <= -2
 *Color: rgb 242 215 41
-  
+
+'define p50=const(const(maskout(cape255_0mb,cape255_0mb-500),1.0),0,-u)*const(const(maskout(no4lftxsfc,no4lftxsfc-2),1.0),0,-u)'
+
+'define prop=const(const(maskout(p50,p50-1),1.0),0,-u))'
+
+'d prop' 
+
 if (cape255_0mb>= 500&no4lftxsfc<=-2)
 *//TODO: Draw yellow Line for 50% probability of thunderstorms around the Area
 *//TODO: Draw 50% Thunderstorm probability
@@ -247,6 +253,10 @@ endif
 *OR large hail probability (NCEP/SPC Formula) >= 30%
 *OR surface based supercell composite parameter >= 3.5
 *OR surface based significant tornado parameter >= 1.2
+
+'define l1=const(const(maskout(cape255_0mb,cape255_0mb-500),1.0),0,-u)*const(const(maskout(dls,dls-10),1.0),0,-u) +const(const(maskout(lls,lls-10),1.0),0,-u)'
+
+'define level1=const(const(maskout(l1,l1-1),1.0),0,-u))'
 
 if((cape255_0mb>= 500&lls>= 10&dls>= 10&srh3km>= 100) | (scp>=3.5) | (stp>=1.2))
 *//TODO: Drawing Lines around the Level 1 Area (orange line)
@@ -283,9 +293,6 @@ if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>=5))
 *//TODO: Drawing Lines around the Level 3 Area (purple line)
 *//DRAW LEVEL 3
 endif
-
-*DUMMY DISPLAY IF NO VALUES  THERE! WTF, HOW I CAN DRAW SHAPEFILE ALSO IF NO VALUES AVAILABLE?
-'d scp'
 
 '/home/uwbe/uems/grads_scripts/auto_without_sim/plot_cities_'dom
    ghr = i - 1
