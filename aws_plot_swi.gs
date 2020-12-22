@@ -97,7 +97,7 @@ xcbarside = "r"
 'set parea 0 10 1 8.1'
  endif
  endif
-'set grads off'
+ 'set grads off'
 'set grid off'
 
 'set gxout shaded'
@@ -211,18 +211,6 @@ endif
 *LCLterm
 'define LCLterm = ((2000-LCL)/1000)'
 
-*Temperature at LCL
-'define tlcl=(((1/(1/(dewp2m-56)+log((tmp2m/dewp2m))/800))+56)-273.16)'
-
-*Totals Totals Index (TTI)
-'define ttindex = tc850mb+dewp850mb-(2*tc500mb)'
-
-*Windchill
-'define windchill2m = 13.12+(0.6215*tc2m)-(11.37*pow((mag(ugrd10m,vgrd10m)*3.6),0.16)) + (0.3965*tc2m*pow((mag(ugrd10m,vgrd10m)*3.6),0.16))'
-
-*Pressure at LCL
-'define plcl=(pressfc*pow(((tlcl+273.16)/tmp2m),(7/2)))/100'
-
 *Supercelcomposite
 'define scp = ((capesfc/1000) * (shearterm) * (srh3km/50))'
 
@@ -247,8 +235,6 @@ endif
 if (cape255_0mb>= 500&no4lftxsfc<=-2)
 *//TODO: Draw yellow Line for 50% probability of thunderstorms around the Area
 *//TODO: Draw 50% Thunderstorm probability
-'define thsprob=((cape255_0mb)/500)*(no4lftxsfc/2)'
-'d thsprob'
 endif
 
 ************************************************************************
@@ -298,11 +284,8 @@ if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>=5))
 *//DRAW LEVEL 3
 endif
 
-* Colorbar & annotations
-************************
-'q dims'
-times  = sublin(result,5)
-hub = subwrd(times,6)
+*DUMMY DISPLAY IF NO VALUES  THERE! WTF, HOW I CAN DRAW SHAPEFILE ALSO IF NO VALUES AVAILABLE?
+'d scp'
 
 '/home/uwbe/uems/grads_scripts/auto_without_sim/plot_cities_'dom
    ghr = i - 1
@@ -368,10 +351,10 @@ hub = subwrd(times,6)
 #Draw Text in the middle white field
 'set string 1 bl 4'
 'set strsiz 0.1 0.1'
-'draw string 2.7 0.78 Supercel composite: thin black contours, each increment of 1'
-'draw string 2.7 0.58 500hPa geopotential height: Thick contours each 50 meter'
-'draw string 2.7 0.38 Vectors: Direction of Bow propagation'
-'draw string 2.7 0.18 Streamlines: Stormmotion'
+'draw string 2.7 0.78 Line 1'
+'draw string 2.7 0.58 Line 2'
+'draw string 2.7 0.38 Line 3'
+'draw string 2.7 0.18 Line 4'
 
 #Draw Lines in Picture
 'set line 1 1 2'
