@@ -240,6 +240,8 @@ endif
 
 *Conditions
 ***********
+*CAPE 255-0hPa >= 500J/kg AND best 4 layer lifted index <= -2
+  
 if (cape255_0mb>= 500&no4lftxsfc<=-2)
 *//TODO: Draw yellow Line for 50% probability of thunderstorms around the Area
 *//TODO: Draw 50% Thunderstorm probability
@@ -251,12 +253,15 @@ endif
 
 *Conditions
 ***********
-*cape255_0mb >= 500J/kg AND low level shear >=10m/s AND deep layer shear >= 10m/s AND 3km SRH >=100m2/s2
+*CAPE 255-0hPa >= 500J/kg AND low level shear >=10m/s AND deep layer shear >= 10m/s AND 3km storm relative helicity (SRH) >=100m2/s2
+*OR large hail probability (NCEP/SPC Formula) >= 30%
+*OR surface based supercell composite parameter >= 3.5
+*OR surface based significant tornado parameter >= 1.2
+
 if((cape255_0mb>= 500&lls>= 10&dls>= 10&srh3km>= 100) | (scp>=3.5) | (stp>=1.2))
 *//TODO: Drawing Lines around the Level 1 Area (orange line)
 *//DRAW LEVEL 1
-
-else if ((cape255_0mb>= 1000&lls>= 15&dls>= 20&srh3km>= 150) | (scp>=7.5) | (stp>=2.5))
+endif
 
 *************************************************************************
 * Level 2: 10% Chance of a severe Thunderstorm, large hail or a Tornado *
@@ -264,10 +269,15 @@ else if ((cape255_0mb>= 1000&lls>= 15&dls>= 20&srh3km>= 150) | (scp>=7.5) | (stp
 
 *Conditions
 ***********
+*CAPE 255-0hPa >= 1000J/kg AND low level shear >=15m/s AND deep layer shear >= 20m/s AND 3km storm relative helicity (SRH) >=150m2/s2
+*OR large hail probaility (NCEP/SCP Forumlar) >= 99%
+*OR surface based supercell composite parameter >= 7.5
+*OR surface based significant tornado parameter >= 2.5
+
+if ((cape255_0mb>= 1000&lls>= 15&dls>= 20&srh3km>= 150) | (scp>=7.5) | (stp>=2.5))
 *//TODO: Drawing Lines around the Level 2 Area (red line)
 *//DRAW LEVEL 2
-
-else if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>=5))
+endif
 
 *************************************************************************
 * Level 3: 15% Chance of a severe Thunderstorm, large hail or a Tornado *
@@ -275,9 +285,13 @@ else if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>
 
 *Conditions
 ***********
+*CAPE 255-0hPa >= 2000J/kg AND low level shear >=20m/s AND deep layer shear >= 25m/s AND 3km storm relative helicity (SRH) >=200m2/s2
+*OR surface based supercell composite parameter >= 15
+*OR surface based significant tornado parameter >= 5
+
+if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>=5))
 *//TODO: Drawing Lines around the Level 3 Area (purple line)
 *//DRAW LEVEL 3
-
 endif
 
 * Colorbar & annotations
