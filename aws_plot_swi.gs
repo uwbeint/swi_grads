@@ -1,6 +1,120 @@
+*Run Script without Display with follow command:
+*Command: grads -h GD -blcx "run aws_uwbe_int.gs DOMAIN DATE HOUR CYCLE"
+*Example for Use this Script: grads -h GD -blcx "run aws_uwbe_int.gs ch4km 20201212 12 74"
+*Script by Dominic Kurz, UwBe International
+*meteo@weather.uwbeinternational.org
+
+function main(args)
+
 ******************************
 * SWI - Severe Weather Index *
 ******************************
+
+*******************************************************************
+
+  domain = subwrd(args,1)
+  date = subwrd(args,2)
+  hour  = subwrd(args,3)
+  hours = subwrd(args,4)
+
+*******************************************************************
+
+'sdfopen https://nomads.ncep.noaa.gov/dods/gfs_0p25/gfs'date'/gfs_0p25_'hour'z'
+
+if (domain = 'it4km') ; dom="it4km" ; endif
+if (domain = 'ch4km') ; dom="ch4km" ; endif
+
+i = 1
+
+while (i < hours)
+   say 'i = 'i
+   if (dom = 'it4km')
+      'set lon 6.85 18.5'
+      'set lat 37.08 46.25'
+#Wenn Draw Title unten verwendet wird: set parea 0 8.5 1 10.5, falls KEIN Titel verwendet wird, dann set parea 0 8.5 1 11
+#'set parea 0 8.5 1 10.5'
+       endif
+   if (dom = 'ch4km')
+      'set lon 5.5 11'
+      'set lat 45 48.5'
+#Wenn Draw Title unten verwendet wird: set parea 0 8.5 1 10.5, falls KEIN Titel verwendet wird, dann set parea 0 8.5 1 11
+#'set parea 0 8.5 1 10.5'
+     endif
+
+        'set map 1 1 7'
+
+   'set t 'i
+   'q time'
+   if (i = 1)
+  runwrd=subwrd(result,3)
+  cyc=substr(runwrd,1,2)
+  say 'cyc = 'cyc
+  rundate=substr(runwrd,4,2)
+  runmo=substr(runwrd,6,3)
+  runyear=substr(runwrd,9,4)
+  'q files'
+  runlin=sublin(result,1)
+  say 'runlin = 'runlin
+  runwrd=subwrd(runlin,4)
+  runfile=substr(runwrd,1,10)
+   endif
+   'q time'
+   fwrd=subwrd(result,3)
+   fhr=substr(fwrd,1,2)
+   fdate=substr(fwrd,4,2)
+   fmo=substr(fwrd,6,3)
+   fyear=substr(fwrd,9,4)
+
+if (borders = "shp")
+'set mpdraw off'
+endif
+
+xcbarside = "r"
+
+* Map options & resolution
+**************************
+'set mproj scaled'
+'set mpvals -2 19 47 59'
+'set display color white'
+'set csmooth on'
+'set mpdset hires'
+'set strsiz 0.2'
+'set xlab off'
+'set ylab off'
+ if (dom = 'it4km')
+ if (xcbarside = 'l')
+'set parea 1.05 11 1 8.1'
+ endif
+ if (xcbarside = 'r')
+'set parea 0 10 1 8.1'
+ endif
+ endif
+ if (dom = 'ch4km')
+ if (xcbarside = 'l')
+'set parea 1.05 11 1 8.1'
+ endif
+ if (xcbarside = 'r')
+'set parea 0 10 1 8.1'
+ endif
+ endif
+'set grads off'
+'set grid off'
+
+'set gxout shaded'
+
+if (domain = 'ch4km')
+'set line 1 1 6'
+'draw shp /home/uwbe/uems/grads_scripts/shp/CHE_water_areas_dcw.shp'
+endif
+
+if (domain = 'it4km')
+'set line 1 1 6'
+'draw shp /home/uwbe/uems/grads_scripts/shp/ITA_water_areas_dcw.shp'
+endif
+
+* Colortable
+************
+'/home/uwbe/uems/grads_scripts/auto_without_sim/color.gs 0 20 0.2 -gxout shaded -kind (255,255,255)->(130,130,130)->(190,190,63)->(255,255,0)->(236,208,0)->(217,161,0)->(197,114,0)->(178,67,0)->(158,20,0)->(179,16,56)->(201,11,113)->(223,7,169)->(245,2,226)->(216,32,229)->(187,62,232)->(158,92,236)->(129,122,239)->(100,152,243)->(71,182,246)->(42,212,249)->(13,242,253)'
 
 * Declaration variables & calculations
 **************************************
@@ -161,3 +275,93 @@ else if ((cape255_0mb>= 2000&lls>= 20&dls>= 25&srh3km>= 200) | (scp>=15) | (stp>
 ***********
 *DRAW LEVEL 3
 endif
+
+* Colorbar & annotations
+************************
+'q dims'
+times  = sublin(result,5)
+hub = subwrd(times,6)
+
+'/home/uwbe/uems/grads_scripts/auto_without_sim/plot_cities_'dom
+   ghr = i - 1
+
+'set strsiz 0.15 0.15'
+'draw string 0.4 8.33 UwBe International - Severe Weather Index (Forecast & Warning Areas)'
+    if (domain = 'ch4km') ; gtx="Switzerland 3km Grid" ; endif
+    if (domain = 'it4km') ; gtx="Italy 3km Grid" ; endif
+
+*if(xcbarside = 'l')
+*#xcbar left
+*'/home/uwbe/uems/grads_scripts/auto_without_sim/xcbar 0.28 0.53 1 8.1 -direction v  -line on -fskip 5 -fwidth 0.10 -fheight 0.11'
+
+*'set strsiz 0.12'
+*'set string 1 r 3 270' ; 'draw string 0.15 1.05 <-- higher means increased potential & severity for/of BowEchos ->'
+*endif
+
+*if(xcbarside = 'r')
+*#xcbar right
+*'/home/uwbe/uems/grads_scripts/auto_without_sim/xcbar 10.25 10.5 1.05 8.05 -direction v  -line on -fskip 5 -fwidth 0.10 -fheight 0.11'
+*'set strsiz 0.12'
+*'set string 1 r 3 270' ; 'draw string 10.13 1.05 <-- higher means increased potential & severity for/of BowEchos ->'
+*endif
+
+#Set Boxes under the Chart
+'set line 0 1 2'
+'draw recf 0 0.5 2.5 1'
+'draw recf 0 0 2.5 0.5'
+'draw recf 8.5 0 11 1'
+'draw recf 8.5 0.5 11 1'
+
+'set line 1 1 2' 
+'draw rec 0 0.5 2.5 1'
+'draw rec 0 0 2.5 0.5'
+'draw rec 8.5 0 11 1'
+'draw rec 8.5 0.5 11 1'
+
+#Draw ARW/NMM Text Box Left
+'set string 1 bl 6 0'
+'set strsiz 0.095 0.095'
+'draw string 0.15 0.8 NMM/ARW'
+'set string 1 bl 0'
+'draw string 1 0.8 v4.2.1 3km Grid'
+'set strsiz 0.085 0.085'
+'draw string 0.15 0.6 (c)weather.uwbeinternational.org'
+
+#Draw Text in the right 2nd bottom Box
+'set string 1 bl 4'
+'set strsiz 0.1 0.1'
+'draw string 0.15 0.2 Run: 'rundate' 'runmo' 'runyear'_'cyc' UTC'
+
+#Draw Text in the right bottom Box
+'set strsiz 0.1 0.1'
+'set string 1 bl 5'
+'draw string 9.5 0.8 Valid'
+'set string 1 bl 6'
+'draw string 8.85 0.6 'fdate' 'fmo' 'fyear'_'fhr' UTC'
+'set string 1 bl 5'
+'set strsiz 0.1 0.1'
+'draw string 9 0.3 UwBe International'
+'draw string 8.7 0.15 Severe Weather Research'
+
+#Draw Text in the middle white field
+'set string 1 bl 4'
+'set strsiz 0.1 0.1'
+'draw string 2.7 0.78 Supercel composite: thin black contours, each increment of 1'
+'draw string 2.7 0.58 500hPa geopotential height: Thick contours each 50 meter'
+'draw string 2.7 0.38 Vectors: Direction of Bow propagation'
+'draw string 2.7 0.18 Streamlines: Stormmotion'
+
+#Draw Lines in Picture
+'set line 1 1 2'
+'draw line 0 0.01 11 0.01'
+'draw line 10.99 0 10.99 8.1'
+'draw line 0 8.1 11 8.1'
+
+if (ghr < 10)
+   'printim /home/uwbe/uems/runs/'domain'/wrf_out/auto_without_sim/uwbe_swe_index/'cyc'/bow_derecho_'hPa'_'runfile'f0'ghr'.png x950 y950 png white'
+   else
+   'printim /home/uwbe/uems/runs/'domain'/wrf_out/auto_without_sim/uwbe_swe_index/'cyc'/bow_derecho_'hPa'_'runfile'f'ghr'.png x950 y950 png white'
+   endif
+   'clear'
+   i = i + 1
+endwhile
