@@ -19,7 +19,11 @@ function main(args)
 
 *******************************************************************
 
-'sdfopen https://nomads.ncep.noaa.gov/dods/gfs_0p25/gfs'date'/gfs_0p25_'hour'z'
+*'sdfopen https://nomads.ncep.noaa.gov/dods/gfs_0p25/gfs'date'/gfs_0p25_'hour'z'
+
+file='/home/uwbe/uems/runs/'domain'/emsprd/grads/2007261800_wrfout_arw_d01.ctl'
+
+'open 'file
 
 if (domain = 'it4km') ; dom="it4km" ; endif
 if (domain = 'ch4km') ; dom="ch4km" ; endif
@@ -115,7 +119,7 @@ endif
 * Colortable
 ************
 *Level < 1 = white / Level 1 = Orange / level 2 = Red / Level 3 = Purple
-'/home/uwbe/uems/grads_scripts/auto_without_sim/color.gs 0 3 0.2 -gxout shaded -kind (255,255,255)->(245,176,73)->(242,41,41)->(242,41,229)'
+'/home/uwbe/uems/grads_scripts/auto_without_sim/color.gs 0 4 0.2 -gxout shaded -kind (255,255,255)->(216,230,16)->(245,176,73)->(242,41,41)->(242,41,229)'
 
 * Declaration variables & calculations
 **************************************  
@@ -230,13 +234,13 @@ endif
 *Conditions
 ***********
 *CAPE 255-0hPa >= 500J/kg AND best 4 layer lifted index <= -2
-*Color: rgb 242 215 41
+*Color: rgb 216,230,16
 
-'define p50=const(const(maskout(cape255_0mb,cape255_0mb-500),1.0),0,-u)*const(const(maskout(no4lftxsfc,no4lftxsfc-2),1.0),0,-u)'
-
-'define prop=const(const(maskout(p50,p50-1),1.0),0,-u))'
-
-'d prop' 
+'define prob=const(const(maskout(cape255_0mb,cape255_0mb-500),1.0),0,-u)*const(const(maskout(no4LFTX180_0mb,-2-no4LFTX180_0mb),1.0),0,-u)'
+'set gxout contour'
+'set cstyle 1'
+'set cthick 10'
+'d prob'
 
 if (cape255_0mb>= 500&no4lftxsfc<=-2)
 *//TODO: Draw yellow Line for 50% probability of thunderstorms around the Area
