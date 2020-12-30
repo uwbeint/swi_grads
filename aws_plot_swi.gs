@@ -104,7 +104,8 @@ xcbarside = "r"
  'set grads off'
 'set grid off'
 
-'set gxout shaded'
+'set gxout shaded' 
+'set datawarn off'
 
 if (domain = 'ch4km')
 'set line 1 1 6'
@@ -119,7 +120,7 @@ endif
 * Colortable
 ************
 *Level < 1 = white / Level 1 = Orange / level 2 = Red / Level 3 = Purple
-'/home/uwbe/uems/grads_scripts/auto_without_sim/color.gs 0 4 0.2 -gxout shaded -kind (255,255,255)->(216,230,16)->(245,176,73)->(242,41,41)->(242,41,229)'
+*'/home/uwbe/uems/grads_scripts/auto_without_sim/color.gs 0 4 0.2 -gxout shaded -kind (255,255,255)->(216,230,16)->(245,176,73)->(242,41,41)->(242,41,229)'
 
 * Declaration variables & calculations
 **************************************  
@@ -237,15 +238,17 @@ endif
 *Color: rgb 216,230,16
 
 'define prob=const(const(maskout(cape255_0mb,cape255_0mb-500),1.0),0,-u)*const(const(maskout(no4LFTX180_0mb,-2-no4LFTX180_0mb),1.0),0,-u)'
-'set gxout contour'
-'set cstyle 1'
-'set cthick 10'
-'d prob'
+'define prb=const(const(maskout(prob,prob-1),1.0),0,-u))'
+*'set gxout contour'
+*'set cstyle 1'
+*'set cthick 10'
+*'d prb'
 
-if (cape255_0mb>= 500&no4lftxsfc<=-2)
 *//TODO: Draw yellow Line for 50% probability of thunderstorms around the Area
 *//TODO: Draw 50% Thunderstorm probability
-endif
+'set clevs 0 1'
+'set ccols 0 7'
+'d prob'
 
 ************************************************************************
 * Level 1: 5% Chance of a severe Thunderstorm, large hail or a Tornado *
